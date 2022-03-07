@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import * as React from "react";
+import {
+  Routes,
+  Route,
+} from "react-router-dom";
+import { AuthProvider, RequireAuth  } from "./Auth";
+import { ProtectedPage, SubPageA, SubPageB } from './Content';
+import Layout from "./Layout";
+import LoginPage from "./Login";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <h1>Auth Example</h1>
+
+      <Routes>
+        <Route element={
+          <RequireAuth>
+            <Layout />
+          </RequireAuth>
+        }>
+          <Route path="/" element={<ProtectedPage />} />
+          <Route path="/sub-A" element={<SubPageA />} />
+          <Route path="/sub-B" element={<SubPageB />} />
+        </Route>
+        <Route path="/login" element={<LoginPage />} />
+      </Routes>
+    </AuthProvider>
   );
 }
 
-export default App;
