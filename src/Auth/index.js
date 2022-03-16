@@ -9,10 +9,10 @@ import {
  * This represents some generic auth provider API, like Firebase.
  */
 const fakeAuthProvider = {
-  isAuthenticated: false,
+  isAuthenticated: sessionStorage.LOGGED ? true : false,
   signin(callback) {
     fakeAuthProvider.isAuthenticated = true;
-    setTimeout(callback, 100); // fake async
+    setTimeout(callback, 100); /// fake async
   },
   signout(callback) {
     fakeAuthProvider.isAuthenticated = false;
@@ -23,18 +23,21 @@ const fakeAuthProvider = {
 let AuthContext = React.createContext(null);
 
 export function AuthProvider({ children }) {
-  let [user, setUser] = React.useState(null);
-
+  const userState = sessionStorage?.LOGGED || null; /// temp - stay logged in
+  let [user, setUser] = React.useState(userState);
+  
   let signin = (newUser, callback) => {
     return fakeAuthProvider.signin(() => {
       setUser(newUser);
+      sessionStorage.setItem("LOGGED", newUser); /// temp - stay logged in
       callback();
     });
   };
-
+  
   let signout = (callback) => {
     return fakeAuthProvider.signout(() => {
       setUser(null);
+      sessionStorage.setItem("LOGGED", false); /// temp - stay logged in
       callback();
     });
   };

@@ -37,7 +37,7 @@ const LoginPage = () => {
           Username: <input name="username" type="text" autoComplete="off" list="auth-example" />
         </label>{" "}
         <button type="submit">Login</button>
-        <datalist id="auth-example"><option value="user" /><option value="not no user" /></datalist>
+        <datalist id="auth-example"><option value="user" /><option value="not no user" /><option value="Guest" /></datalist>
       </form>
     </div>
   );
